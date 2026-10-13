@@ -1,0 +1,32 @@
+{
+  "GOAT-Decoding-a-Successful-App": {
+    "additions": 355,
+    "deletions": 2,
+    "pushed_at": "2021-09-22T19:32:39Z"
+  },
+  "ICS-Server-Manager": {
+    "additions": 1330,
+    "deletions": 404,
+    "pushed_at": "2024-06-21T06:06:35Z"
+  },
+  "ShopSight": {
+    "additions": 10420,
+    "deletions": 46,
+    "pushed_at": "2025-11-05T08:29:59Z"
+  },
+  "Tree": {
+    "additions": 31273,
+    "deletions": 0,
+    "pushed_at": "2024-06-22T19:07:51Z"
+  },
+  "Web-Sockets": {
+    "additions": 11490,
+    "deletions": 0,
+    "pushed_at": "2024-06-22T19:01:32Z"
+  },
+  "ZotConnect": {
+    "additions": 2107,
+    "deletions": 2,
+    "pushed_at": "2025-10-29T00:19:56Z"
+  }
+}

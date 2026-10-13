@@ -145,7 +145,9 @@ def render_svg(config: Config, stats: Stats, art: list[str], theme: Theme, today
     width = value_x + max(longest * INFO_CHAR, spark_width) + PAD
 
     header = f"{config.handle}@{config.host}"
-    y = PAD + INFO_SIZE
+    info_lines = len(rows) + 4
+    offset = max(0.0, (art_height - info_lines * INFO_STEP) / 2)
+    y = PAD + INFO_SIZE + offset
     info = []
     for kind, text in (("h", header), ("d", "-" * len(header))):
         info.append(f'<text class="{kind}" x="{_n(info_x)}" y="{_n(y)}">{escape(text)}</text>')

@@ -10,13 +10,11 @@ def half_black_half_white():
 
 
 def test_lines_have_requested_width_and_aspect_corrected_height():
-    lines = image_to_ascii(half_black_half_white(), columns=10, invert=False)
+    lines = image_to_ascii(half_black_half_white(), columns=10)
     assert len(lines) == 5
     assert {len(line) for line in lines} == {10}
 
 
-def test_dark_variant_is_dense_where_bright_and_light_variant_is_inverse():
-    dark = image_to_ascii(half_black_half_white(), columns=10, invert=False)[0]
-    light = image_to_ascii(half_black_half_white(), columns=10, invert=True)[0]
-    assert dark[0] == " " and dark[-1] == "@"
-    assert light[0] == "@" and light[-1] == " "
+def test_bright_pixels_are_dense_and_dark_pixels_are_blank():
+    first = image_to_ascii(half_black_half_white(), columns=10)[0]
+    assert first[0] == " " and first[-1] == "@"
