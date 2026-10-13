@@ -23,7 +23,8 @@ README.md                  picture element switching dark_mode.svg / light_mode.
 dark_mode.svg              generated
 light_mode.svg             generated
 config.toml                static profile content (role, location, focus, languages, links)
-data/ascii.txt             portrait, generated once, committed
+data/ascii_dark.txt        portrait for dark mode (bright pixels dense), generated once, committed
+data/ascii_light.txt       portrait for light mode (dark pixels dense), generated once, committed
 data/stats.json            last good stats, committed by the workflow
 data/loc_cache.json        per-repo LOC cache keyed by repo and pushed_at
 src/profile_card/          package: stats.py, render.py, theme.py, ascii_art.py, cli.py
@@ -41,7 +42,7 @@ pyproject.toml
   code. Pure functions that take an injected HTTP session, so they test without the network.
   - Repos and stars: GraphQL, owned non-fork public repos, stars summed over them.
   - Commits: GraphQL `contributionsCollection` per calendar year since account creation,
-    summed, plus the last 30 daily counts for the sparkline.
+    summed. The last 30 daily contribution counts from the contribution calendar feed the sparkline.
   - Lines of code: REST `stats/contributors` per owned public repo, additions and deletions
     for the user. Cached by `pushed_at` so unchanged repos are not re-queried. A 202
     (stats still computing) keeps the cached value.
@@ -56,7 +57,7 @@ pyproject.toml
 ## What the card shows
 
 ```
-manush@github
+manush@github   (handle in config.toml)
 -------------
 OS:         macOS
 Role:       AI Engineer @ NVIDIA
@@ -65,8 +66,11 @@ Focus:      Structured & graph foundation models
 Languages:  Python, ...
 Stack:      tables -> entities -> relations -> embeddings -> predictions
 Device:     NVIDIA AI Engineer | compute capability: human+GPU
-Repos: N   Stars: N   Commits: N   LOC: N (+adds / -dels)
-Activity:   30-day sparkline of daily commits
+Repos:      N
+Stars:      N
+Commits:    N
+LOC:        net (+adds / -dels)
+Activity:   30-day sparkline of daily contributions
 Run:        epoch <day of year> | loss <deterministic decay> | curiosity up
 Query:      MATCH (me)-[:BUILDS]->(models) RETURN graphs, tables, structure;
 Contact:    GitHub | LinkedIn
