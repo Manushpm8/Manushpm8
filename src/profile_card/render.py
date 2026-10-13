@@ -175,7 +175,7 @@ def render_svg(config: Config, stats: Stats, art: list[str], theme: Theme, today
     )
 
     height = PAD * 2 + max(art_height, y - PAD)
-    title = escape(f"{config.handle}@{config.host}")
+    title = escape(f"{config.handle}@{config.host}", {'"': "&quot;"})
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{_n(width)}" height="{_n(height)}" '
         f'viewBox="0 0 {_n(width)} {_n(height)}" role="img" aria-label="{title}">'

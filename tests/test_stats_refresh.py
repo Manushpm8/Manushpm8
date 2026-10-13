@@ -110,3 +110,18 @@ def test_stats_round_trip_and_corrupt_file_degrades_to_defaults(tmp_path):
     path.write_text("{not json")
     assert load_stats(path) == Stats()
     assert load_stats(tmp_path / "missing.json") == Stats()
+
+
+def test_pending_stats_are_retried_until_ready():
+    session = FakeSession(
+        rest={URL.format("a"): [FakeResponse(status_code=202), FakeResponse(contributors("me", 5, 1))]}
+    )
+    additions, deletions, _ = fetch_loc(session, "me", [Repo("a", 0, PUSHED)], {})
+    assert (additions, deletions) == (5, 1)
+    assert len(session.gets) == 2
+
+
+def test_failed_fetch_emits_a_workflow_warning(capsys):
+    error = {"errors": [{"message": "rate limited"}], "data": None}
+    refresh(FakeSession(graphql=[error, error]), "me", date(2026, 3, 1), Stats(), {})
+    assert "::warning" in capsys.readouterr().err

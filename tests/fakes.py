@@ -31,6 +31,8 @@ class FakeSession:
     def get(self, url, timeout):
         self.gets.append(url)
         item = self.rest[url]
+        if isinstance(item, list):
+            item = item.pop(0)
         if isinstance(item, Exception):
             raise item
         return item

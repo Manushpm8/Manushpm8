@@ -1,5 +1,7 @@
 import pytest
 
+import profile_card.stats as stats_module
+
 from profile_card.config import Config
 from profile_card.stats import Stats
 
@@ -30,3 +32,8 @@ def stats():
 @pytest.fixture
 def art():
     return ["@" * 20, "#" * 20, "." * 20]
+
+
+@pytest.fixture(autouse=True)
+def no_retry_delay(monkeypatch):
+    monkeypatch.setattr(stats_module, "RETRY_DELAY", 0)

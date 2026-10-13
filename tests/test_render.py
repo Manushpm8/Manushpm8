@@ -24,6 +24,10 @@ def test_output_is_valid_xml_even_with_ampersand_in_config(config, stats, art):
     assert "Structured &amp; graph foundation models" in svg
 
 
+def test_quote_in_handle_keeps_xml_valid(config, stats, art):
+    ET.fromstring(render_svg(replace(config, handle='say"hi'), stats, art, DARK, TODAY))
+
+
 def test_value_column_is_aligned(config, stats, art):
     svg = render_svg(config, stats, art, DARK, TODAY)
     xs = set(re.findall(r'<tspan class="v" x="([\d.]+)"', svg))

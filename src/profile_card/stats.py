@@ -1,5 +1,6 @@
 import json
 import sys
+import time
 from dataclasses import dataclass, replace
 from datetime import date, timedelta
 
@@ -122,6 +123,8 @@ def fetch_daily(session, user, today):
 
 
 REST_ROOT = "https://api.github.com"
+RETRY_ATTEMPTS = 3
+RETRY_DELAY = 3
 FETCH_ERRORS = (requests.RequestException, StatsError, KeyError, TypeError, ValueError)
 
 
@@ -180,10 +183,14 @@ def save_cache(path, cache):
 
 
 def _repo_loc(session, user, repo):
-    response = session.get(
-        f"{REST_ROOT}/repos/{user}/{repo.name}/stats/contributors", timeout=TIMEOUT
-    )
-    if response.status_code == 202:
+    url = f"{REST_ROOT}/repos/{user}/{repo.name}/stats/contributors"
+    for attempt in range(RETRY_ATTEMPTS):
+        response = session.get(url, timeout=TIMEOUT)
+        if response.status_code != 202:
+            break
+        if attempt < RETRY_ATTEMPTS - 1:
+            time.sleep(RETRY_DELAY)
+    else:
         return None
     response.raise_for_status()
     contributors = [] if response.status_code == 204 else response.json() or []
@@ -217,7 +224,7 @@ def _attempt(label, action, fallback):
     try:
         return action()
     except FETCH_ERRORS as error:
-        print(f"{label}: keeping previous value ({error})", file=sys.stderr)
+        print(f"::warning title=profile-card::{label}: keeping previous value ({error})", file=sys.stderr)
         return fallback
 
 
